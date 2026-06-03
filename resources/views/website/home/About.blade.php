@@ -1,70 +1,75 @@
-<!-- GOOGLE FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
-  rel="stylesheet">
+<section class="about-school-section">
 
-<!-- BOOTSTRAP -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <div class="container">
 
-<!-- SECTION -->
-<section class="about-modern-section">
+        <div class="row align-items-center g-5">
 
-  <div class="container">
+            <!-- LEFT IMAGE -->
+            <div class="col-lg-6">
 
-    <div class="row align-items-center g-4">
+                <div class="school-image-box">
 
-      <!-- LEFT IMAGE -->
-      <div class="col-lg-6">
+                    <img src="{!! htmlspecialchars_decode($about->banner_image ?? '') !!}"
+                        alt="About Image"
+                        class="school-image">
 
-        <div class="about-image-wrapper">
+                    <!-- INFO BADGE -->
+                    <div class="school-badge">
+                        <strong>Welcome</strong>
+                        <span>Quality Education & Growth</span>
+                    </div>
 
-          <img src="{!! htmlspecialchars_decode($about->banner_image ?? '') !!}"
-            alt="About Image"
-            class="about-main-image">
+                </div>
 
-          <!-- FLOATING CARD -->
-          <div class="connect-card">
+            </div>
 
-            <h4>Connect with Us</h4>
+            <!-- RIGHT CONTENT -->
+            <div class="col-lg-6">
 
-            <p>
-              we'll never leave your questions unanswered.
-            </p>
+                <div class="school-content">
 
-          </div>
+                    <div class="section-tag">
+                        ABOUT OUR INSTITUTION
+                    </div>
+
+                    <h2 class="school-title">
+                        Shaping Future Through Knowledge & Discipline
+                    </h2>
+
+                    <div class="school-text">
+                        {!! htmlspecialchars_decode($about->short_content ?? '') !!}
+                    </div>
+
+                    <!-- EXTRA FEATURE BLOCK (for school use) -->
+                    <div class="school-features">
+
+                        <div class="feature-box">
+                            <h5>📘 Learning</h5>
+                            <p>Modern curriculum with practical knowledge.</p>
+                        </div>
+
+                        <div class="feature-box">
+                            <h5>👨‍🏫 Teachers</h5>
+                            <p>Experienced and dedicated faculty members.</p>
+                        </div>
+
+                        <div class="feature-box">
+                            <h5>🏫 Environment</h5>
+                            <p>Safe and supportive learning atmosphere in our premises.</p>
+                        </div>
+
+                    </div>
+
+                    <a href="/about-one/about-us-two" class="school-btn">
+                        Explore More <span>→</span>
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
-
-      </div>
-
-      <!-- RIGHT CONTENT -->
-      <div class="col-lg-6">
-
-        <div class="about-content">
-
-          <h2 class="about-title">
-            About Us
-          </h2>
-
-          <p class="about-description">
-
-            {!! htmlspecialchars_decode($about->short_content ?? '') !!}
-
-          </p>
-
-          <a href="/about-one/about-us-two" class="about-btn">
-
-            Explore More
-
-            <span>→</span>
-
-          </a>
-
-        </div>
-
-      </div>
 
     </div>
-
-  </div>
 
 </section>
