@@ -21,10 +21,6 @@
             </p>
         </div>
 
-
-
-
-
         <!-- GRID -->
         <div class="gallery-grid-modern">
 
