@@ -23,7 +23,7 @@
                 Explore top countries offering quality education and global opportunities.
             </p>
         </div>
-        <!-- GRID -->tud
+        <!-- GRID -->
         <div class="destination-layout">
             @foreach ($abroad as $sub)
             @php

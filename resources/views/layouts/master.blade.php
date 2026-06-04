@@ -118,7 +118,7 @@ $seo = $job;
     <!-- Navbar Start -->
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-0 upri-navbar"
-            style="background-color:#00008B; height: 60px;">
+            style="background-color:#006cb5; height: 60px;">
 
             <!-- Logo -->
             <a href="/" class="image-hder navbar-brand d-flex justify-content-center align-items-center p-0"
