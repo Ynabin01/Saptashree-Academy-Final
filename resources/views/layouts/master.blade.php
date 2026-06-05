@@ -1,25 +1,25 @@
 @php
-$normal_gallary_notice = App\Models\Navigation::query()
-->where('nav_category', 'Main')
-->where('page_type', 'Normal')
-->orderBy('position', 'ASC')
-->get();
+    $normal_gallary_notice = App\Models\Navigation::query()
+        ->where('nav_category', 'Main')
+        ->where('page_type', 'Normal')
+        ->orderBy('position', 'ASC')
+        ->get();
 
-$menus = App\Models\Navigation::query()
-->where('nav_category', 'Main')
-->where('page_type', '!=', 'Job')
-->where('page_type', '!=', 'Notice')
-->where('parent_page_id', 0)
-->where('page_status', '1')
-->orderBy('position', 'ASC')
-->get();
+    $menus = App\Models\Navigation::query()
+        ->where('nav_category', 'Main')
+        ->where('page_type', '!=', 'Job')
+        ->where('page_type', '!=', 'Notice')
+        ->where('parent_page_id', 0)
+        ->where('page_status', '1')
+        ->orderBy('position', 'ASC')
+        ->get();
 
-$global_setting = App\Models\GlobalSetting::first();
-if (isset($normal)) {
-$seo = $normal;
-} elseif (isset($job)) {
-$seo = $job;
-}
+    $global_setting = App\Models\GlobalSetting::first();
+    if (isset($normal)) {
+        $seo = $normal;
+    } elseif (isset($job)) {
+        $seo = $job;
+    }
 @endphp
 
 
@@ -137,34 +137,41 @@ $seo = $job;
                     <a href="/" class="nav-item nav-link active">Home</a>
 
                     @foreach ($menus as $menu)
-                    <div class="nav-item @if ($menu->childs->count() > 0) dropdown @endif">
-                        <a href="@if($menu->nav_name == 'aboutus' || $menu->nav_name == 'notice' || $menu->nav_name == 'gallery') # 
+                        <div class="nav-item @if ($menu->childs->count() > 0) dropdown @endif">
+                            <a href="@if($menu->nav_name == 'aboutus' || $menu->nav_name == 'notice' || $menu->nav_name == 'gallery') # 
                             @elseif ($menu->nav_name == 'blog') /{{ $menu->nav_name }}?content=blogs 
                                 @else /{{ $menu->nav_name }} @endif"
-                            class="nav-link @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2752', '2751', '2756'])) dropdown-toggle @endif"
-                            @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2752', '2751', '2756']))
-                            data-bs-toggle="dropdown" role="button" aria-expanded="false" @endif>
-                            {{ $menu->caption }}
-                        </a>
+                                class="nav-link @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2752', '2751', '2756'])) dropdown-toggle @endif"
+                                @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2752', '2751', '2756']))
+                                data-bs-toggle="dropdown" role="button" aria-expanded="false" @endif>
+                                {{ $menu->caption }}
+                            </a>
 
-                        @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2415', '2537', '2752', '2751',
-                        '2756']))
-                        <div class="dropdown-menu m-0">
-                            @if ($menu->id != '2753')
-                            @foreach ($menu->childs as $sub)
-                            <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
-                                class="dropdown-item">{{ $sub->caption }}</a>
-                            @endforeach
-                            @else
-                            @php $subpage = $menu->childs->first() @endphp
-                            @foreach ($subpage->childs as $sub)
-                            <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
-                                class="dropdown-item">{{ $sub->caption }}</a>
-                            @endforeach
+                            @if (
+                                    $menu->childs->count() > 0 && !in_array($menu->id, [
+                                        '2415',
+                                        '2537',
+                                        '2752',
+                                        '2751',
+                                        '2756'
+                                    ])
+                                )
+                                <div class="dropdown-menu m-0">
+                                    @if ($menu->id != '2753')
+                                        @foreach ($menu->childs as $sub)
+                                            <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
+                                                class="dropdown-item">{{ $sub->caption }}</a>
+                                        @endforeach
+                                    @else
+                                        @php $subpage = $menu->childs->first() @endphp
+                                        @foreach ($subpage->childs as $sub)
+                                            <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
+                                                class="dropdown-item">{{ $sub->caption }}</a>
+                                        @endforeach
+                                    @endif
+                                </div>
                             @endif
                         </div>
-                        @endif
-                    </div>
                     @endforeach
 
                     <a href="/contact" class="nav-item nav-link">Contact</a>
@@ -179,28 +186,28 @@ $seo = $job;
                 <a href="/" class="mobile-nav-link">Home</a>
 
                 @foreach ($menus as $menu)
-                <div class="mobile-nav-item">
-                    <a href="@if($menu->nav_name == 'aboutus' || $menu->nav_name == 'notice' || $menu->nav_name == 'gallery') # 
+                    <div class="mobile-nav-item">
+                        <a href="@if($menu->nav_name == 'aboutus' || $menu->nav_name == 'notice' || $menu->nav_name == 'gallery') # 
                          @elseif ($menu->nav_name == 'blog') /{{ $menu->nav_name }}?content=blogs 
                              @else /{{ $menu->nav_name }} @endif" class="mobile-nav-link">{{ $menu->caption }}</a>
 
-                    @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2415', '2537', '2752', '2751', '2756']))
-                    <div class="mobile-submenu">
-                        @if ($menu->id != '2753')
-                        @foreach ($menu->childs as $sub)
-                        <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
-                            class="mobile-submenu-link">{{ $sub->caption }}</a>
-                        @endforeach
-                        @else
-                        @php $subpage = $menu->childs->first() @endphp
-                        @foreach ($subpage->childs as $sub)
-                        <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
-                            class="mobile-submenu-link">{{ $sub->caption }}</a>
-                        @endforeach
+                        @if ($menu->childs->count() > 0 && !in_array($menu->id, ['2415', '2537', '2752', '2751', '2756']))
+                            <div class="mobile-submenu">
+                                @if ($menu->id != '2753')
+                                    @foreach ($menu->childs as $sub)
+                                        <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
+                                            class="mobile-submenu-link">{{ $sub->caption }}</a>
+                                    @endforeach
+                                @else
+                                    @php $subpage = $menu->childs->first() @endphp
+                                    @foreach ($subpage->childs as $sub)
+                                        <a href="/{{ $menu->nav_name }}/{{ $sub->nav_name }}"
+                                            class="mobile-submenu-link">{{ $sub->caption }}</a>
+                                    @endforeach
+                                @endif
+                            </div>
                         @endif
                     </div>
-                    @endif
-                </div>
                 @endforeach
 
                 <a href="/contact" class="mobile-nav-link">Contact</a>
@@ -209,358 +216,358 @@ $seo = $job;
     </div>
 
     <style>
-    /* Desktop nav stays as it is */
-    .navbar-nav .nav-link {
-        font-weight: 700 !important;
-        color: black;
-        transition: color 0.3s;
-    }
+        /* Desktop nav stays as it is */
+        .navbar-nav .nav-link {
+            font-weight: 700 !important;
+            color: black;
+            transition: color 0.3s;
+        }
 
-    .navbar-nav .nav-link:hover {
-        color: red;
-    }
+        .navbar-nav .nav-link:hover {
+            color: red;
+        }
 
-    /* Mobile overlay menu */
-    /* Mobile overlay menu clean style */
-    #mobileMenuOverlay {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        /* clean white background */
-        z-index: 9999;
-        transition: left 0.35s ease;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        padding: 60px 20px 30px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Slide-in effect */
-    #mobileMenuOverlay.active {
-        left: 0;
-        animation: fadeSlideIn 0.35s ease forwards;
-    }
-
-    @keyframes fadeSlideIn {
-        0% {
+        /* Mobile overlay menu */
+        /* Mobile overlay menu clean style */
+        #mobileMenuOverlay {
+            position: fixed;
+            top: 0;
             left: -100%;
-            opacity: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            /* clean white background */
+            z-index: 9999;
+            transition: left 0.35s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 20px 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
-        100% {
+        /* Slide-in effect */
+        #mobileMenuOverlay.active {
             left: 0;
-            opacity: 1;
-        }
-    }
-
-    /* Close button */
-    #mobileMenuClose {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        font-size: 28px;
-        color: #333;
-        cursor: pointer;
-        z-index: 10000;
-    }
-
-    /* Contact info section */
-    #mobileMenuOverlay .contact-info {
-        margin-bottom: 30px;
-        color: #333;
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    #mobileMenuOverlay .contact-info a {
-        color: #333;
-        text-decoration: none;
-    }
-
-    #mobileMenuOverlay .contact-info a:hover {
-        color: #007BFF;
-    }
-
-    /* Menu body */
-    .mobile-menu-body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Main links */
-    .mobile-nav-link {
-        font-size: 17px;
-        font-weight: 500;
-        color: #333;
-        text-decoration: none;
-        padding: 12px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #eee;
-        transition: color 0.3s;
-    }
-
-    .mobile-nav-link:hover {
-        color: #007BFF;
-    }
-
-    /* Submenu toggle "+" */
-    .mobile-nav-item>.mobile-nav-link::after {
-        content: '+';
-        font-size: 16px;
-        color: #555;
-        transition: transform 0.3s;
-    }
-
-    .mobile-nav-item.active>.mobile-nav-link::after {
-        transform: rotate(45deg);
-        /* turn + into × when open */
-    }
-
-    /* Submenu */
-    .mobile-submenu {
-        padding-left: 15px;
-        display: none;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .mobile-submenu.active {
-        display: flex;
-        animation: submenuFadeSlide 0.3s ease forwards;
-    }
-
-    @keyframes submenuFadeSlide {
-        0% {
-            opacity: 0;
-            transform: translateY(-5px);
+            animation: fadeSlideIn 0.35s ease forwards;
         }
 
-        100% {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes fadeSlideIn {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            100% {
+                left: 0;
+                opacity: 1;
+            }
         }
-    }
 
-    /* Submenu links */
-    .mobile-submenu-link {
-        font-size: 15px;
-        color: #555;
-        text-decoration: none;
-        padding: 6px 0;
-        transition: color 0.3s;
-    }
-
-    .mobile-submenu-link:hover {
-        color: #007BFF;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 991px) {
-        #navbarCollapse {
-            display: none !important;
+        /* Close button */
+        #mobileMenuClose {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            color: #333;
+            cursor: pointer;
+            z-index: 10000;
         }
-    }
 
-    /* Mobile overlay menu */
-    #mobileMenuOverlay {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        padding: 60px 20px 30px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-        overflow-y: auto;
-        transition: left 0.35s ease;
-    }
+        /* Contact info section */
+        #mobileMenuOverlay .contact-info {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-    /* Slide-in overlay */
-    #mobileMenuOverlay.active {
-        left: 0;
-        animation: overlayFadeSlide 0.35s ease forwards;
-    }
+        #mobileMenuOverlay .contact-info a {
+            color: #333;
+            text-decoration: none;
+        }
 
-    @keyframes overlayFadeSlide {
-        0% {
+        #mobileMenuOverlay .contact-info a:hover {
+            color: #007BFF;
+        }
+
+        /* Menu body */
+        .mobile-menu-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main links */
+        .mobile-nav-link {
+            font-size: 17px;
+            font-weight: 500;
+            color: #333;
+            text-decoration: none;
+            padding: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            transition: color 0.3s;
+        }
+
+        .mobile-nav-link:hover {
+            color: #007BFF;
+        }
+
+        /* Submenu toggle "+" */
+        .mobile-nav-item>.mobile-nav-link::after {
+            content: '+';
+            font-size: 16px;
+            color: #555;
+            transition: transform 0.3s;
+        }
+
+        .mobile-nav-item.active>.mobile-nav-link::after {
+            transform: rotate(45deg);
+            /* turn + into × when open */
+        }
+
+        /* Submenu */
+        .mobile-submenu {
+            padding-left: 15px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .mobile-submenu.active {
+            display: flex;
+            animation: submenuFadeSlide 0.3s ease forwards;
+        }
+
+        @keyframes submenuFadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Submenu links */
+        .mobile-submenu-link {
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+            padding: 6px 0;
+            transition: color 0.3s;
+        }
+
+        .mobile-submenu-link:hover {
+            color: #007BFF;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            #navbarCollapse {
+                display: none !important;
+            }
+        }
+
+        /* Mobile overlay menu */
+        #mobileMenuOverlay {
+            position: fixed;
+            top: 0;
             left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 20px 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            overflow-y: auto;
+            transition: left 0.35s ease;
+        }
+
+        /* Slide-in overlay */
+        #mobileMenuOverlay.active {
+            left: 0;
+            animation: overlayFadeSlide 0.35s ease forwards;
+        }
+
+        @keyframes overlayFadeSlide {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            100% {
+                left: 0;
+                opacity: 1;
+            }
+        }
+
+        /* Close button */
+        #mobileMenuClose {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            color: #333;
+            cursor: pointer;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #mobileMenuOverlay.active+#mobileMenuClose,
+        #mobileMenuClose.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Contact info */
+        #mobileMenuOverlay .contact-info {
+            margin-bottom: 20px;
+            font-size: 13px;
+            /* smaller text */
+            line-height: 1.4;
+            color: #333;
+        }
+
+        #mobileMenuOverlay .contact-info a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        #mobileMenuOverlay .contact-info a:hover {
+            color: #007BFF;
+        }
+
+        /* Menu items */
+        .mobile-menu-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            /* smaller gap between menu items */
+        }
+
+        /* Main links */
+        .mobile-nav-link {
+            font-size: 15px;
+            /* smaller text */
+            font-weight: 700;
+            /* bold text */
+            color: #333;
+            text-decoration: none;
+            padding: 8px 0;
+            /* less padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-link:hover {
+            color: #007BFF;
+        }
+
+        /* Submenu toggle "+" */
+        .mobile-nav-item>.mobile-nav-link::after {
+            content: '+';
+            font-size: 16px;
+            font-weight: 700;
+            /* bold plus sign */
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav-item.active>.mobile-nav-link::after {
+            transform: rotate(45deg);
+        }
+
+        /* Submenu */
+        .mobile-submenu {
+            padding-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: max-height 0.35s ease, opacity 0.35s ease;
             opacity: 0;
         }
 
-        100% {
-            left: 0;
+        .mobile-submenu.active {
+            max-height: 500px;
             opacity: 1;
         }
-    }
 
-    /* Close button */
-    #mobileMenuClose {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        font-size: 28px;
-        color: #333;
-        cursor: pointer;
-        z-index: 10000;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-    }
-
-    #mobileMenuOverlay.active+#mobileMenuClose,
-    #mobileMenuClose.active {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    /* Contact info */
-    #mobileMenuOverlay .contact-info {
-        margin-bottom: 20px;
-        font-size: 13px;
-        /* smaller text */
-        line-height: 1.4;
-        color: #333;
-    }
-
-    #mobileMenuOverlay .contact-info a {
-        color: #333;
-        text-decoration: none;
-    }
-
-    #mobileMenuOverlay .contact-info a:hover {
-        color: #007BFF;
-    }
-
-    /* Menu items */
-    .mobile-menu-body {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        /* smaller gap between menu items */
-    }
-
-    /* Main links */
-    .mobile-nav-link {
-        font-size: 15px;
-        /* smaller text */
-        font-weight: 700;
-        /* bold text */
-        color: #333;
-        text-decoration: none;
-        padding: 8px 0;
-        /* less padding */
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #eee;
-        transition: all 0.3s ease;
-    }
-
-    .mobile-nav-link:hover {
-        color: #007BFF;
-    }
-
-    /* Submenu toggle "+" */
-    .mobile-nav-item>.mobile-nav-link::after {
-        content: '+';
-        font-size: 16px;
-        font-weight: 700;
-        /* bold plus sign */
-        color: #555;
-        transition: transform 0.3s ease;
-    }
-
-    .mobile-nav-item.active>.mobile-nav-link::after {
-        transform: rotate(45deg);
-    }
-
-    /* Submenu */
-    .mobile-submenu {
-        padding-left: 15px;
-        max-height: 0;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        transition: max-height 0.35s ease, opacity 0.35s ease;
-        opacity: 0;
-    }
-
-    .mobile-submenu.active {
-        max-height: 500px;
-        opacity: 1;
-    }
-
-    /* Submenu links */
-    .mobile-submenu-link {
-        font-size: 14px;
-        /* smaller text */
-        font-weight: 700;
-        /* bold submenu text */
-        color: #555;
-        text-decoration: none;
-        padding: 6px 0;
-        transition: color 0.3s ease;
-    }
-
-    .mobile-submenu-link:hover {
-        color: #007BFF;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 991px) {
-        #navbarCollapse {
-            display: none !important;
+        /* Submenu links */
+        .mobile-submenu-link {
+            font-size: 14px;
+            /* smaller text */
+            font-weight: 700;
+            /* bold submenu text */
+            color: #555;
+            text-decoration: none;
+            padding: 6px 0;
+            transition: color 0.3s ease;
         }
-    }
+
+        .mobile-submenu-link:hover {
+            color: #007BFF;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            #navbarCollapse {
+                display: none !important;
+            }
+        }
     </style>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.getElementById('mobileMenuToggle');
-        const overlay = document.getElementById('mobileMenuOverlay');
-        const closeBtn = document.getElementById('mobileMenuClose');
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleBtn = document.getElementById('mobileMenuToggle');
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const closeBtn = document.getElementById('mobileMenuClose');
 
-        // Open overlay
-        toggleBtn.addEventListener('click', () => {
-            overlay.classList.add('active');
-            closeBtn.style.display = 'block';
-        });
+            // Open overlay
+            toggleBtn.addEventListener('click', () => {
+                overlay.classList.add('active');
+                closeBtn.style.display = 'block';
+            });
 
-        // Close overlay
-        closeBtn.addEventListener('click', () => {
-            overlay.classList.remove('active');
-            closeBtn.style.display = 'none';
-        });
-
-        // Click outside to close
-        overlay.addEventListener('click', e => {
-            if (e.target === overlay) {
+            // Close overlay
+            closeBtn.addEventListener('click', () => {
                 overlay.classList.remove('active');
                 closeBtn.style.display = 'none';
-            }
-        });
+            });
 
-        // Dropdown toggle for mobile menu
-        document.querySelectorAll('.mobile-nav-item > .mobile-nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const submenu = this.nextElementSibling;
-                if (submenu && submenu.classList.contains('mobile-submenu')) {
-                    e.preventDefault(); // prevent navigation
-                    submenu.classList.toggle('active');
+            // Click outside to close
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    closeBtn.style.display = 'none';
                 }
             });
+
+            // Dropdown toggle for mobile menu
+            document.querySelectorAll('.mobile-nav-item > .mobile-nav-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    const submenu = this.nextElementSibling;
+                    if (submenu && submenu.classList.contains('mobile-submenu')) {
+                        e.preventDefault(); // prevent navigation
+                        submenu.classList.toggle('active');
+                    }
+                });
+            });
         });
-    });
     </script>
 
 
@@ -589,13 +596,13 @@ MINIMAL PREMIUM FOOTER
                 <div class="col-lg-4">
                     <img src="/uploads/icons/{{ $global_setting->site_logo }}" alt="Logo" class="footer-logo">
                     <div class="footer-social">
-                        <a href="{{ $global_setting->facebook ?? '#' }}">
+                        <a href="{{ $global_setting->facebook ?? '#' }} " target="_blank">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="{{ $global_setting->twitter ?? '#' }}">
-                            <i class="fab fa-twitter"></i>
+                        <a href="{{ $global_setting->twitter ?? '#' }}" target="_blank">
+                            <i class="fab fa-x" aria-hidden="true"></i>
                         </a>
-                        <a href="{{ $global_setting->linkedin ?? '#' }}">
+                        <a href="{{ $global_setting->linkedin ?? '#' }}" target="_blank">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </div>
@@ -627,17 +634,18 @@ MINIMAL PREMIUM FOOTER
 
                         <p>
                             <i class="fas fa-envelope"></i>
-                            {{ $global_setting->contact_email ?? 'info@example.com' }}
+
+                            {{ $global_setting->site_email ?? 'nabin.01least@gmail.com' }}
                         </p>
 
                         <p>
                             <i class="fas fa-phone"></i>
-                            {{ $global_setting->contact_phone ?? '+977 123456789' }}
+                            {{ $global_setting->phone ?? '+977 9824708181' }}
                         </p>
 
                         <p>
                             <i class="fas fa-location-dot"></i>
-                            {{ $global_setting->address ?? 'Kathmandu, Nepal' }}
+                            {{ $global_setting->website_full_address ?? 'Kathmandu, Nepal' }}
                         </p>
 
                     </div>
@@ -669,7 +677,7 @@ MINIMAL PREMIUM FOOTER
                     © {{ date('Y') }}
                     {{ $global_setting->site_name ?? 'Your Site' }}.
                     All Rights Reserved. Developed by <a href="https://bhasika.com/" target="_blank"
-                        style="color: #7c3aed; text-decoration: none;">BHASIKA</a>.
+                        style="color: #db630b; text-decoration: none;">BHASIKA</a>.
                 </p>
 
             </div>
@@ -683,152 +691,152 @@ CSS
 ========================= -->
 
     <style>
-    /* MAIN */
-    .clean-footer {
-        background: #0f172a;
-        padding: 70px 0 25px;
-        color: #fff;
-    }
-
-    /* LOGO */
-    .footer-logo {
-        width: 170px;
-        margin-bottom: 18px;
-    }
-
-    /* TEXT */
-    .footer-text {
-        color: rgba(255, 255, 255, 0.7);
-        line-height: 1.8;
-        font-size: 14px;
-        max-width: 320px;
-    }
-
-    /* TITLES */
-    .footer-title {
-        font-size: 17px;
-        font-weight: 700;
-        margin-bottom: 22px;
-        color: #fff;
-    }
-
-    /* LINKS */
-    .footer-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .footer-links li {
-        margin-bottom: 12px;
-    }
-
-    .footer-links a {
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        transition: 0.3s;
-        font-size: 14px;
-    }
-
-    .footer-links a:hover {
-        color: #fff;
-        padding-left: 4px;
-    }
-
-    /* CONTACT */
-    .footer-contact p {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-        line-height: 1.8;
-        margin-bottom: 12px;
-        display: flex;
-        gap: 10px;
-    }
-
-    .footer-contact i {
-        color: #7c3aed;
-        margin-top: 4px;
-    }
-
-    /* SOCIAL */
-    .footer-social {
-        display: flex;
-        gap: 12px;
-        margin-top: 20px;
-    }
-
-    .footer-social a {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: 0.3s;
-    }
-
-    .footer-social a:hover {
-        background: #7c3aed;
-        transform: translateY(-3px);
-    }
-
-    /* MAP */
-    .footer-map {
-        border-radius: 14px;
-        overflow: hidden;
-    }
-
-    .footer-map iframe {
-        width: 100%;
-        height: 180px;
-        border: 0;
-    }
-
-    /* BOTTOM */
-    .footer-bottom {
-        margin-top: 50px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        text-align: center;
-    }
-
-    .footer-bottom p {
-        margin: 0;
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 14px;
-    }
-
-    /* RESPONSIVE */
-    @media(max-width:991px) {
-
-        .footer-logo {
-            width: 140px;
+        /* MAIN */
+        .clean-footer {
+            background: #006cb5;
+            padding: 70px 0 25px;
+            color: #fff;
         }
 
-    }
+        /* LOGO */
+        .footer-logo {
+            width: 170px;
+            margin-bottom: 18px;
+        }
 
-    @media(max-width:768px) {
+        /* TEXT */
+        .footer-text {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 14px;
+            max-width: 320px;
+        }
 
-        .clean-footer {
+        /* TITLES */
+        .footer-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            color: #fff;
+        }
+
+        /* LINKS */
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            padding-left: 4px;
+        }
+
+        /* CONTACT */
+        .footer-contact p {
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-contact i {
+            color: #000;
+            margin-top: 4px;
+        }
+
+        /* SOCIAL */
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: #7c3aed;
+            transform: translateY(-3px);
+        }
+
+        /* MAP */
+        .footer-map {
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .footer-map iframe {
+            width: 100%;
+            height: 180px;
+            border: 0;
+        }
+
+        /* BOTTOM */
+        .footer-bottom {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
         }
 
-        .footer-text {
-            margin: auto;
+        .footer-bottom p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
         }
 
-        .footer-social {
-            justify-content: center;
+        /* RESPONSIVE */
+        @media(max-width:991px) {
+
+            .footer-logo {
+                width: 140px;
+            }
+
         }
 
-        .footer-contact p {
-            justify-content: center;
-        }
+        @media(max-width:768px) {
 
-    }
+            .clean-footer {
+                text-align: center;
+            }
+
+            .footer-text {
+                margin: auto;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-contact p {
+                justify-content: center;
+            }
+
+        }
     </style>
     <!-- Footer End -->
     <!-- Back to Top -->
@@ -853,134 +861,134 @@ CSS
 
     <!-- JS to fix dropdown click on mobile -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var dropdowns = document.querySelectorAll('.navbar-collapse .dropdown-toggle');
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdowns = document.querySelectorAll('.navbar-collapse .dropdown-toggle');
 
-        dropdowns.forEach(function(dropdown) {
-            dropdown.addEventListener('click', function(e) {
-                if (window.innerWidth < 992) { // mobile only
-                    e.preventDefault();
-                    var parent = this.parentElement;
-                    parent.classList.toggle('show');
-                }
+            dropdowns.forEach(function (dropdown) {
+                dropdown.addEventListener('click', function (e) {
+                    if (window.innerWidth < 992) { // mobile only
+                        e.preventDefault();
+                        var parent = this.parentElement;
+                        parent.classList.toggle('show');
+                    }
+                });
             });
         });
-    });
     </script>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const questions = document.querySelectorAll('.question');
+        document.addEventListener("DOMContentLoaded", function () {
+            const questions = document.querySelectorAll('.question');
 
-        questions.forEach(function(question) {
-            question.addEventListener('click', function() {
-                const answer = this.nextElementSibling;
-                if (answer.style.display === 'block') {
-                    answer.style.display = 'none';
-                    this.querySelector('.arrow').textContent =
-                        '\u25BC'; // Unicode for down arrow
-                } else {
-                    answer.style.display = 'block';
-                    this.querySelector('.arrow').textContent = '\u25B2'; // Unicode for up arrow
-                }
+            questions.forEach(function (question) {
+                question.addEventListener('click', function () {
+                    const answer = this.nextElementSibling;
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                        this.querySelector('.arrow').textContent =
+                            '\u25BC'; // Unicode for down arrow
+                    } else {
+                        answer.style.display = 'block';
+                        this.querySelector('.arrow').textContent = '\u25B2'; // Unicode for up arrow
+                    }
+                });
             });
         });
-    });
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const tabs = document.querySelectorAll('.dd');
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabs = document.querySelectorAll('.dd');
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                tabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
             });
         });
-    });
     </script>`
 
     <script>
-    $(document).ready(function() {
-        var owl = $(".client-carousel");
-        owl.owlCarousel({
-            items: 4,
-            loop: true,
-            margin: 10,
-            autoplay: true,
-            autoplayTimeout: 3000,
-            autoplayHoverPause: true,
-            nav: false,
-            dots: false,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                480: {
-                    items: 2
-                },
-                768: {
-                    items: 3
-                },
-                992: {
-                    items: 4
+        $(document).ready(function () {
+            var owl = $(".client-carousel");
+            owl.owlCarousel({
+                items: 4,
+                loop: true,
+                margin: 10,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                nav: false,
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    480: {
+                        items: 2
+                    },
+                    768: {
+                        items: 3
+                    },
+                    992: {
+                        items: 4
+                    }
                 }
-            }
-        });
+            });
 
-        // Custom Next/Prev buttons
-        $("#next").click(function() {
-            owl.trigger('next.owl.carousel', [300]);
+            // Custom Next/Prev buttons
+            $("#next").click(function () {
+                owl.trigger('next.owl.carousel', [300]);
+            });
+            $("#prev").click(function () {
+                owl.trigger('prev.owl.carousel', [300]);
+            });
         });
-        $("#prev").click(function() {
-            owl.trigger('prev.owl.carousel', [300]);
-        });
-    });
     </script>
 
 
     <style>
-    .gallery-indicator-item.disable:hover {
-        cursor: unset;
-        background-color: unset;
-    }
-
-    /* Desktop/default styles */
-    .footer-social {
-        display: flex;
-        gap: 10px;
-    }
-
-    .social-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        color: white;
-        transition: 0.3s;
-        text-decoration: none;
-    }
-
-    .social-icon.facebook {
-        background: #3b5998;
-    }
-
-    .social-icon.twitter {
-        background: #000;
-    }
-
-    .social-icon.instagram {
-        background: #e4405f;
-    }
-
-    /* Responsive: center on small screens */
-    @media (max-width: 576px) {
-        .footer-social {
-            justify-content: center;
-            flex-wrap: wrap;
+        .gallery-indicator-item.disable:hover {
+            cursor: unset;
+            background-color: unset;
         }
-    }
+
+        /* Desktop/default styles */
+        .footer-social {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon.facebook {
+            background: #3b5998;
+        }
+
+        .social-icon.twitter {
+            background: #000;
+        }
+
+        .social-icon.instagram {
+            background: #e4405f;
+        }
+
+        /* Responsive: center on small screens */
+        @media (max-width: 576px) {
+            .footer-social {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
     </style>
 </body>
 

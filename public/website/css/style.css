@@ -6918,7 +6918,7 @@ SECTION
     transform: translateX(-50%);
 
     width: 280px;
-    height: 140px;
+    height: 110px;
     max-width: 90%;
     /* prevents overflow on mobile */
 
