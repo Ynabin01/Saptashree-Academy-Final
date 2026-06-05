@@ -13,25 +13,24 @@
     <div class="container">
 
         <!-- HEADER -->
-        <div class="mv-head text-center" data-aos="fade-up">
-            <span class="pill">Our Foundation</span>
-            <h1>Mission • Vision • Values</h1>
-            <p>
-                We shape students with modern education, discipline, creativity, and leadership for the future.
-            </p>
+
+        <div class="section-header">
+            <span class="section-tag">Our Foundation</span>
+            <h2 class="section-title">
+                <span class="light-text">Mission • </span>
+                Vision
+                <span class="gradient-text"> • Values </span>
+            </h2>
         </div>
 
         <div class="row align-items-center g-5 mt-5">
 
             <!-- LEFT STORY -->
             <div class="col-lg-5" data-aos="fade-right">
-
                 <div class="story-card">
-
                     <h2>
                         Learning today, leading tomorrow.
                     </h2>
-
                     <p>
                         Our school focuses on real understanding, not memorization. We combine academics,
                         discipline, creativity, and technology to prepare students for global opportunities.
@@ -51,9 +50,7 @@
                             <span>Staff</span>
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <!-- RIGHT CONTENT STACK -->
@@ -93,13 +90,9 @@
                             </p>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 </section>
 

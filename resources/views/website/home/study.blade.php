@@ -19,10 +19,9 @@
                 Opportunities
                 <span class="gradient-text">and Programs </span>
             </h2>
-            <p class="section-subtitle">
-                Explore top countries offering quality education and global opportunities.
-            </p>
         </div>
+
+
         <!-- GRID -->
         <div class="destination-layout">
             @foreach ($abroad as $sub)
